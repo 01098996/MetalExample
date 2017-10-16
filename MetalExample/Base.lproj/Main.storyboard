@@ -21,24 +21,43 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OIQ-5T-Dbp" customClass="MTKView">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jmk-ET-LKK">
+                                        <rect key="frame" x="165.5" y="613" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="EXs-tA-aL3"/>
+                                            <constraint firstAttribute="height" constant="44" id="YDI-YN-1OC"/>
+                                        </constraints>
+                                        <state key="normal" title="Save"/>
+                                        <connections>
+                                            <action selector="save:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zCK-9o-7jA"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Jmk-ET-LKK" secondAttribute="bottom" constant="10" id="M4B-ta-qRh"/>
+                                    <constraint firstItem="Jmk-ET-LKK" firstAttribute="centerX" secondItem="OIQ-5T-Dbp" secondAttribute="centerX" id="phK-Cg-2eM"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="OIQ-5T-Dbp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="FuZ-PB-mjj"/>
+                            <constraint firstItem="OIQ-5T-Dbp" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="btM-TM-Ht6"/>
                             <constraint firstItem="Wgf-gx-6et" firstAttribute="top" secondItem="OIQ-5T-Dbp" secondAttribute="bottom" id="gCv-p7-eZW"/>
-                            <constraint firstItem="OIQ-5T-Dbp" firstAttribute="top" secondItem="SCb-DB-BLY" secondAttribute="bottom" id="kzq-aT-gBU"/>
                             <constraint firstAttribute="trailing" secondItem="OIQ-5T-Dbp" secondAttribute="trailing" id="tsh-iP-SMk"/>
                         </constraints>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="displayView" destination="OIQ-5T-Dbp" id="wzR-Bd-nZc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="32.799999999999997" y="80.50974512743629"/>
         </scene>
     </scenes>
 </document>

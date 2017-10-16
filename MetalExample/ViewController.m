@@ -14,6 +14,7 @@
 @property (nonatomic, strong) id<MTLTexture> texutre;
 @property (nonatomic, strong) id<MTLCommandQueue> commnadQueue;
 @property (nonatomic, strong) id<MTLComputePipelineState> computePipelineState;
+@property (nonatomic, strong) id<MTLBuffer> resultBuffer;
 @end
 
 @implementation ViewController
@@ -44,6 +45,40 @@
     self.computePipelineState = [device newComputePipelineStateWithFunction:function
                                                                       error:&error];
     NSAssert(!error && self.computePipelineState, @"加载脚本出错");
+    
+    switch (self.texutre.pixelFormat) {
+        case MTLPixelFormatRGBA16Unorm:
+            self.resultBuffer = [device newBufferWithLength:self.texutre.width * self.texutre.height * 4 * sizeof(GLubyte)
+                                                    options:MTLResourceOptionCPUCacheModeDefault];
+            break;
+        default:
+            NSAssert(NO, @"pixelFormat is unsupport !!!!");
+            break;
+    }
+}
+
+- (IBAction)save:(id)sender{
+    CGSize size = CGSizeMake(self.texutre.width, self.texutre.height);
+    GLubyte *imageBytes = [self.resultBuffer contents];
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef imageContext = CGBitmapContextCreate(imageBytes,
+                                                      size.width,
+                                                      size.height,
+                                                      8,
+                                                      size.width * 4,
+                                                      colorSpace,
+                                                      kCGImageAlphaPremultipliedLast);
+    
+    
+    CGContextTranslateCTM(imageContext, 0, size.height);
+    CGContextScaleCTM(imageContext, 1, -1);
+    
+    CGImageRef imageRef = CGBitmapContextCreateImage(imageContext);
+    UIImage *resultImage = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    CGContextRelease(imageContext);
+    CGColorSpaceRelease(colorSpace);
+    UIImageWriteToSavedPhotosAlbum(resultImage, nil, nil, nil);
 }
 
 - (void)drawInMTKView:(nonnull MTKView *)view {
@@ -62,6 +97,7 @@
                                                 [self.texutre height] / threadgroupCounts.height + 1,
                                                 1);
     NSAssert(threadsPerThreadGroup.width * threadsPerThreadGroup.height < maxTotalThreadsPerThreadgroup, @"单个线程组超出最大线程数");
+    [computeCommandEncoder setBuffer:self.resultBuffer offset:0 atIndex:0];
     [computeCommandEncoder dispatchThreadgroups:threadgroupCounts
                           threadsPerThreadgroup:threadsPerThreadGroup];
     [computeCommandEncoder endEncoding];
